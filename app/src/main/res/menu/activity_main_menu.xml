@@ -7,6 +7,10 @@
         android:title="Privacy Policy"/>
 
     <item
+        android:id="@+id/activity_main_products"
+        android:title="Products"/>
+
+    <item
         android:id="@+id/activity_main_profile"
         android:title="Profile"/>
 

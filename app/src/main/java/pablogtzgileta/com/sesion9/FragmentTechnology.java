@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import pablogtzgileta.com.sesion9.beans.AdapterProduct;
 import pablogtzgileta.com.sesion9.beans.ItemProduct;
+import pablogtzgileta.com.sesion9.database.DataBaseHandler;
+import pablogtzgileta.com.sesion9.database.ItemProductControl;
 
 
 /**
@@ -21,8 +23,9 @@ import pablogtzgileta.com.sesion9.beans.ItemProduct;
 public class FragmentTechnology extends Fragment {
 
 
-    private RecyclerView.Adapter mAdapter;
+    private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    static ArrayList<ItemProduct> myDataSet;
 
     public FragmentTechnology() {
     }
@@ -35,20 +38,19 @@ public class FragmentTechnology extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        ArrayList<ItemProduct> myDataSet = new ArrayList<>();
-        ItemProduct itemProduct = new ItemProduct();
-        itemProduct.setTitle("MacBook Pro 17\"");
-        itemProduct.setStore("BestBuy");
-        itemProduct.setLocation("Zapopan, Jalisco");
-        itemProduct.setPhone("33 12345678");
-        itemProduct.setImage(0);
-        itemProduct.setDescription("Llevate esta Mac con un 30% de descuento para que" +
-                " puedas programar para XCode y Android sin tener que batallar tanto como en tu " +
-                "Windows");
-        myDataSet.add(itemProduct);
+        ItemProductControl itemProductControl = new ItemProductControl();
+        myDataSet = itemProductControl.getProductsWhere(
+                "store", DataBaseHandler.KEY_PRODUCT_ID + " ASC",
+                DataBaseHandler.getInstance(getActivity()));
         mAdapter = new AdapterProduct(getActivity(), myDataSet);
         recyclerView.setAdapter(mAdapter);
+
         return view;
+    }
+
+    public static void notifyDataSetChanged(ItemProduct itemProduct){
+        myDataSet.add(itemProduct);
+        mAdapter.notifyDataSetChanged();
     }
 
 }

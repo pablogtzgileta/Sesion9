@@ -67,9 +67,9 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mProductTitle.setText(mDataSet.get(position).getTitle());
-        holder.mProductStore.setText(mDataSet.get(position).getStore());
-        holder.mProductLocation.setText(mDataSet.get(position).getLocation());
-        holder.mProductPhone.setText(mDataSet.get(position).getPhone());
+        holder.mProductStore.setText(mDataSet.get(position).getStore().getName());
+        holder.mProductLocation.setText(mDataSet.get(position).getStore().getCity().getName());
+        holder.mProductPhone.setText(mDataSet.get(position).getStore().getPhone());
         switch (mDataSet.get(position).getImage()) {
             case 0:
                 holder.mProductImage.setImageResource(R.drawable.mac);
@@ -93,7 +93,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL,
-                        Uri.parse("tel:" + mDataSet.get(position).getPhone()));
+                        Uri.parse("tel:" + mDataSet.get(position).getStore().getPhone()));
                 context.startActivity(intent);
             }
         });
@@ -102,6 +102,9 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        if (mDataSet == null) {
+            return 0;
+        }
         return mDataSet.size();
     }
 }

@@ -3,9 +3,6 @@ package pablogtzgileta.com.sesion9.beans;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by oscarvargas on 03/10/17.
- */
 
 public class User {
     private String username;

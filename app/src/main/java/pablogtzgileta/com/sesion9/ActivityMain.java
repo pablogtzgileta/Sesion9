@@ -1,5 +1,6 @@
 package pablogtzgileta.com.sesion9;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,11 +16,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import pablogtzgileta.com.sesion9.beans.ItemProduct;
+
 public class ActivityMain extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private final int INTENT_PRODUCTS_NOTIFY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +61,27 @@ public class ActivityMain extends AppCompatActivity {
                 Intent intent = new Intent(this, ActivityPrivacyPolicy.class);
                 startActivity(intent);
                 return true;
+            case R.id.activity_main_products:
+                Intent products = new Intent(this, ActivityProduct.class);
+                startActivityForResult(products, INTENT_PRODUCTS_NOTIFY);
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case INTENT_PRODUCTS_NOTIFY:
+                if (resultCode == Activity.RESULT_OK) {
+                    if(data != null){
+                        ItemProduct itemProduct = data.getParcelableExtra("ITEM");
+                        if(itemProduct.getCategory().getName().equalsIgnoreCase("TECHNOLOGY")){
+                            FragmentTechnology.notifyDataSetChanged(itemProduct);
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     public void clearPreferences(){
